@@ -25,9 +25,9 @@ return new class extends Migration {
                 ->unique()->index()
                 ->constrained('units', 'unitId');
             $table->decimal('basePrice')->default(0);
-            $table->enum('discountType', ['fixed', 'percent'])->default('fixed');
+            $table->string("discountType")->default('fixed');
             $table->decimal('discountAmount')->default(0);
-            $table->enum('vatType', ['fixed', 'percent'])->default('fixed');
+            $table->string("vatType")->default('fixed');
             $table->decimal('vatAmount')->default(0);
             $table->text('description')->nullable();
             $table->string('imageUrl')->nullable();
