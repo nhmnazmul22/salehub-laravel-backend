@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Database\Factories\ProductVariantFactory;
 use Illuminate\Database\Seeder;
 
 class ProductVariantSeeder extends Seeder
@@ -12,6 +12,6 @@ class ProductVariantSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        ProductVariantFactory::times(5)->create();
     }
 }
