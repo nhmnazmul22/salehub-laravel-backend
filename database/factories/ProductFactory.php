@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -20,10 +21,10 @@ class ProductFactory extends Factory
      */
     public function definition(): array
     {
-        $user = UserFactory::new()->create();
+        $user = User::where('role', 'admin')->first();
         $category = CategoryFactory::new()->create();
         $unit = UnitFactory::new()->create();
-        $brand = BranchFactory::new()->create();
+        $brand = BrandFactory::new()->create();
 
         return [
             'name' => fake()->sentence(),
@@ -31,7 +32,7 @@ class ProductFactory extends Factory
             'uuid' => Str::uuid(),
             'categoryId' => $category->categoryId,
             'unitId' => $unit->unitId,
-            'brandId' => $brand->branchId,
+            'brandId' => $brand->brandId,
             'description' => fake()->text(),
             'imageUrl' => fake()->imageUrl,
             'createdBy' => $user->id,
