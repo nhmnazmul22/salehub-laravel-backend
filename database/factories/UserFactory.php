@@ -24,7 +24,6 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
-        $branch = BranchFactory::new()->create();
         return [
             'firstName' => fake()->name(),
             'lastName' => fake()->name(),
@@ -33,8 +32,6 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
-            'last_login' => now(),
-            'branchId' => $branch->branchId,
         ];
     }
 
