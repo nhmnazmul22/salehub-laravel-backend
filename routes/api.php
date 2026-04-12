@@ -1,8 +1,14 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+if (!function_exists('load_routes')) {
+    function load_routes(string $filepath): void
+    {
+        $routes = function () use ($filepath) {
+            require $filepath;
+        };
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+        $routes();
+    }
+}
+
+load_routes(base_path('/routes/api/v1/api.php'));
