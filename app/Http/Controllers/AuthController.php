@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Resources\User\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,7 +29,7 @@ class AuthController extends BaseController
 
         $data = [
             'token' => $token,
-            'user' => $user,
+            'user' => new UserResource($user),
         ];
 
         return $this->sendSuccessResponse('Login successful', $data, Response::HTTP_OK);
