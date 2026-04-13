@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 abstract class BaseController extends Controller
 {
-    protected function sendSuccessResponse(string $message = 'Data Retrieved successful', mixed $data = null, int $status = 200)
+    protected function sendSuccessResponse(string $message = 'Data Retrieved successful', mixed $data = null, int $status = Response::HTTP_OK)
     {
         return response()->json([
             'success' => true,

@@ -2,32 +2,12 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
-use Database\Factories\UserFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class AuthTest extends TestCase
 {
     use RefreshDatabase;
-
-    private User $user;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->user = UserFactory::new()->create([
-            'firstName' => 'Admin',
-            'lastName' => 'Salehub',
-            'role' => 'admin',
-            'email' => 'admin@salehub.com',
-            'password' => Hash::make('@Admin123'),
-            'remember_token' => Str::random(10),
-        ]);
-    }
 
     /**
      * User can log in
@@ -47,6 +27,25 @@ class AuthTest extends TestCase
         $response->assertJson([
             'success' => true,
             'message' => 'Login successful',
+        ]);
+    }
+
+
+    /**
+     * Get authenticated user
+     */
+
+    public function test_user_can_get_profile(): void
+    {
+        // Act
+        $response = $this->withHeaders($this->authHeaders())
+            ->getJson(route('v1.auth.me'));
+
+        // Assert
+        $response->assertStatus(200);
+        $response->assertJson([
+            'success' => true,
+            'message' => 'Profile retrieved successful'
         ]);
     }
 

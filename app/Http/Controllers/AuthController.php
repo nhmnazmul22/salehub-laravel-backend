@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Resources\User\UserResource;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Log;
+use Mockery\Exception;
 use Symfony\Component\HttpFoundation\Response;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -16,23 +17,35 @@ class AuthController extends BaseController
      */
     public function login(LoginRequest $request)
     {
-        $request->validated();
+        try {
+            $credentials = $request->validated();;
 
-        $credentials = $request->only(['email', 'password']);
+            if (!$token = JWTAuth::attempt($credentials)) {
+                return $this->sendErrorResponse(
+                    'Invalid credentials',
+                    Response::HTTP_UNAUTHORIZED
+                );
+            }
 
-        if (!Auth::attempt($credentials)) {
-            return $this->sendErrorResponse('Invalid credentials', Response::HTTP_UNAUTHORIZED);
+            return $this->sendSuccessResponse(
+                'Login successful',
+                [
+                    'token' => $token,
+                    'user' => new UserResource(auth()->user()),
+                ],
+            );
+        } catch (Exception $err) {
+            Log::error($err);
+            return $this->sendErrorResponse('Internal server error', Response::HTTP_INTERNAL_SERVER_ERROR);
         }
+    }
 
-        $user = Auth::user();
-        $token = JWTAuth::fromUser($user);
-
-        $data = [
-            'token' => $token,
-            'user' => new UserResource($user),
-        ];
-
-        return $this->sendSuccessResponse('Login successful', $data, Response::HTTP_OK);
+    /**
+     * Get the authenticated user
+     */
+    public function me()
+    {
+        return $this->sendSuccessResponse('Profile retrieved successful', new UserResource(auth()->user()));
     }
 
     /**

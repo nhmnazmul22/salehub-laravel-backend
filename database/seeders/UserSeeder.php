@@ -24,7 +24,7 @@ class UserSeeder extends Seeder
             'role' => 'admin',
             'email' => 'salehub_admin@gmail.com',
             'email_verified_at' => now(),
-            'password' => Hash::make('password'),
+            'password' => Hash::make('@Admin123'),
             'remember_token' => Str::random(10),
             'last_login' => now(),
         ]);
