@@ -54,18 +54,29 @@ class AuthTest extends TestCase
      */
     public function test_user_can_logout(): void
     {
-        $response = $this->get('/');
+        $response = $this->withHeaders($this->authHeaders())
+            ->postJson(route('v1.auth.logout'));
 
         $response->assertStatus(200);
+        $response->assertJson([
+            'success' => true,
+            'message' => 'User logged out successful'
+        ]);
     }
 
     /**
-     * User can reset password
+     * User can reset forgot password
      */
-    public function test_user_can_reset_password(): void
+    public function test_user_can_forgot_password(): void
     {
-        $response = $this->get('/');
+        // Arrange
+        $data = [
+            'email' => 'admin@salehub.com',
+        ];
+        // Act
+        $response = $this->postJson(route('v1.auth.forgot-password'), $data);
 
+        // Assert
         $response->assertStatus(200);
     }
 
