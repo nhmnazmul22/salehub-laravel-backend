@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Auth\ForgotPasswordRequest;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\OTPVerifyRequest;
 use App\Http\Resources\User\UserResource;
 use App\Mail\SendOtpMail;
 use App\Models\User;
@@ -88,5 +89,33 @@ class AuthController extends BaseController
 
         return $this->sendSuccessResponse('A 6 digit OTP send to your email. It will expire within 5 min');
 
+    }
+
+    /**
+     * Verify the OTP code
+     */
+
+    public function verifyOTP(OTPVerifyRequest $request)
+    {
+        $validated = $request->validated();
+
+        // Find the user from users table
+        $existUser = User::where('email', $validated['email'])->firstOrFail();
+
+        if (!$existUser) {
+            return $this->sendErrorResponse(
+                'User not found with email ' . $validated['email'],
+                Response::HTTP_NOT_FOUND
+            );
+        };
+
+        // Verify the otp with cached otp
+        $cachedOtp = Cache::get('password_reset_otp' . $existUser->email);
+
+        if ($cachedOtp !== $validated['otp']) {
+            return $this->sendErrorResponse('Invalid OTP');
+        }
+
+        return $this->sendSuccessResponse('OTP verification successful');
     }
 }

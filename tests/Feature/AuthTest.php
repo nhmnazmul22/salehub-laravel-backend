@@ -2,7 +2,10 @@
 
 namespace Tests\Feature;
 
+use App\Mail\SendOtpMail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class AuthTest extends TestCase
@@ -70,6 +73,8 @@ class AuthTest extends TestCase
     public function test_user_can_forgot_password(): void
     {
         // Arrange
+        Mail::fake();
+
         $data = [
             'email' => 'admin@salehub.com',
         ];
@@ -78,15 +83,32 @@ class AuthTest extends TestCase
 
         // Assert
         $response->assertStatus(200);
+        Mail::assertSent(SendOtpMail::class, function ($mail) use ($data) {
+            return $mail->hasTo($data['email']);
+        });
+        $this->assertTrue(Cache::has('password_reset_otp' . $data["email"]));
     }
 
     /**
      * User can generate refresh token
      */
-    public function test_user_can_generate_refresh_token(): void
+    public function test_user_can_verify_OTP_CODE(): void
     {
-        $response = $this->get('/');
+        // Arrange
+        $data = [
+            'email' => 'admin@salehub.com',
+            'otp' => '123456',
+        ];
+        Cache::put('password_reset_otp' . $data['email'], $data['otp'], now()->addMinute(5));
 
+        // Act
+        $response = $this->postJson(route('v1.auth.verify-otp', $data));
+
+        // Assert
         $response->assertStatus(200);
+        $response->assertJson([
+            'success' => true,
+            'message' => 'OTP verification successful'
+        ]);
     }
 }
