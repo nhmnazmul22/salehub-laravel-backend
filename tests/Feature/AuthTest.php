@@ -90,9 +90,9 @@ class AuthTest extends TestCase
     }
 
     /**
-     * User can generate refresh token
+     * User can verify otp code
      */
-    public function test_user_can_verify_OTP_CODE(): void
+    public function test_user_can_verify_OTP_code(): void
     {
         // Arrange
         $data = [
@@ -111,4 +111,29 @@ class AuthTest extends TestCase
             'message' => 'OTP verification successful'
         ]);
     }
+
+    /**
+     * User can reset password after verify otp
+     */
+    public function test_user_can_reset_otp_code(): void
+    {
+        // Arrange
+        $data = [
+            'email' => 'admin@salehub.com',
+            'otp' => '123456',
+        ];
+        Cache::put('password_reset_otp' . $data['email'], $data['otp'], now()->addMinute(5));
+
+        // Act
+        $response = $this->postJson(route('v1.auth.verify-otp', $data));
+
+        // Assert
+        $response->assertStatus(200);
+        $response->assertJson([
+            'success' => true,
+            'message' => 'OTP verification successful'
+        ]);
+    }
+
+
 }
