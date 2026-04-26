@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id("productId");
-            $table->uuid()->index();
+            $table->string('cuid')->nullable();
             $table->string('name');
             $table->string('slug')->index()->nullable();
             $table->foreignId('categoryId')

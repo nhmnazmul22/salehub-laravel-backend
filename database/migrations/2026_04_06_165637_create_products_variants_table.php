@@ -12,6 +12,7 @@ return new class extends Migration {
     {
         Schema::create('products_variants', function (Blueprint $table) {
             $table->id("productVariantId");
+            $table->string('cuid')->nullable();
             $table->string("sku")->unique();
             $table->foreignId("productId")
                 ->constrained('products', 'productId')

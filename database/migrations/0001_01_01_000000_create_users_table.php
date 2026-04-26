@@ -12,6 +12,7 @@ return new class extends Migration {
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->string('cuid')->nullable();
             $table->string('firstName');
             $table->string('lastName');
             $table->string('role')->default('staff');

@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('branches', function (Blueprint $table) {
             $table->id('branchId');
-            $table->uuid()->index();
+            $table->string('cuid')->nullable();
             $table->string('name');
             $table->string('address');
             $table->string('phone')->nullable();

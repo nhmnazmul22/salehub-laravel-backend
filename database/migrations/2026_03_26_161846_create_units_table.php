@@ -12,6 +12,7 @@ return new class extends Migration {
     {
         Schema::create('units', function (Blueprint $table) {
             $table->id('unitId');
+            $table->string('cuid')->nullable();
             $table->string('key');
             $table->string('value');
             $table->boolean('isActive')->default(true);

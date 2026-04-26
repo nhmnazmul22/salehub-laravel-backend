@@ -12,6 +12,7 @@ return new class extends Migration {
     {
         Schema::create('brands', function (Blueprint $table) {
             $table->id('brandId');
+            $table->string('cuid')->nullable();
             $table->string('name');
             $table->string('shortName')->nullable();
             $table->boolean('isActive')->default(true);

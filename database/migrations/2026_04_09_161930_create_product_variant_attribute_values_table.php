@@ -12,6 +12,7 @@ return new class extends Migration {
     {
         Schema::create('product_variant_attribute_values', function (Blueprint $table) {
             $table->id('variantAttributeValueId');
+            $table->string('cuid')->nullable();
             $table->string('value');
             $table->foreignId('variantAttributeKeyId')
                 ->constrained('product_variant_attribute_keys', 'variantAttributeKeyId')
