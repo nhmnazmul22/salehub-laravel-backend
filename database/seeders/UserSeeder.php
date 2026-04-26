@@ -18,15 +18,31 @@ class UserSeeder extends Seeder
 
     public function run(): void
     {
-        UserFactory::new()->create([
-            'firstName' => 'salehub',
-            'lastName' => 'admin',
-            'role' => 'admin',
-            'email' => 'salehub_admin@gmail.com',
-            'email_verified_at' => now(),
-            'password' => Hash::make('@Admin123'),
-            'remember_token' => Str::random(10),
-            'last_login' => now(),
-        ]);
+        $users = [
+            [
+                'firstName' => 'salehub',
+                'lastName' => 'admin',
+                'role' => 'admin',
+                'email' => 'salehub_admin@gmail.com',
+                'email_verified_at' => now(),
+                'password' => Hash::make('@Admin123'),
+                'remember_token' => Str::random(10),
+                'last_login' => now(),
+            ],
+            [
+                'firstName' => 'nhm',
+                'lastName' => 'nazmul',
+                'role' => 'admin',
+                'email' => 'nhmnazmul87@gmail.com',
+                'email_verified_at' => now(),
+                'password' => Hash::make('@Admin123'),
+                'remember_token' => Str::random(10),
+                'last_login' => now(),
+            ]
+        ];
+
+        foreach ($users as $user) {
+            UserFactory::new()->create($user);
+        }
     }
 }

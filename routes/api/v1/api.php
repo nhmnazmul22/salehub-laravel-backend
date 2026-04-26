@@ -14,5 +14,6 @@ Route::middleware('auth:api')->prefix('v1')->as('v1.')->group(function () {
 
         Route::get('/me', [AuthController::class, 'me'])->name('me');
         Route::post('/logout', [AuthController::class, 'logOut'])->name('logout');
+        Route::patch('/change-password', [AuthController::class, 'changePassword'])->name('change-password');
     });
 });

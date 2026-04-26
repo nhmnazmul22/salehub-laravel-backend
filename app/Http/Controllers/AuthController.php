@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Auth\ChangePasswordRequest;
 use App\Http\Requests\Auth\ForgotPasswordRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\OTPVerifyRequest;
@@ -11,6 +12,7 @@ use App\Mail\SendOtpMail;
 use App\Models\User;
 use DB;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -29,6 +31,10 @@ class AuthController extends BaseController
     public function login(LoginRequest $request)
     {
         try {
+            if (auth()->check()) {
+                auth()->logout();
+            }
+
             $credentials = $request->validated();;
 
             if (!$token = JWTAuth::attempt($credentials)) {
@@ -37,6 +43,7 @@ class AuthController extends BaseController
                     Response::HTTP_UNAUTHORIZED
                 );
             }
+
 
             return $this->sendSuccessResponse(
                 'Login successful',
@@ -60,7 +67,7 @@ class AuthController extends BaseController
     }
 
     /**
-     * Update the specified resource in storage.
+     * logout authenticated user
      */
     public function logOut()
     {
@@ -73,7 +80,7 @@ class AuthController extends BaseController
     }
 
     /**
-     * Display the specified resource.
+     * Forgot the password
      */
     public function forgotPassword(ForgotPasswordRequest $request)
     {
@@ -135,6 +142,13 @@ class AuthController extends BaseController
         // Find the user and token
         $existUser = User::where('email', $validated['email'])->first();
 
+        // Check the exist password and new password match or not if not match then send to next process
+        if (Hash::check($validated['newPassword'], $existUser->password)) {
+            return $this->sendErrorResponse(
+                'New password cannot be the same  as the old password',
+            );
+        }
+
         $token = DB::table('password_reset_tokens')
             ->where('email', $existUser->email)
             ->where('token', $validated['token']);
@@ -153,10 +167,36 @@ class AuthController extends BaseController
         $existUser->password = Hash::make($validated['newPassword']);
         $existUser->save();
 
+        // Remove the token
+        $token->delete();
+
         return $this->sendSuccessResponse(
             'Password reset successful',
             ['loginRequired' => true],
             Response::HTTP_ACCEPTED
         );
+    }
+
+    /**
+     * Change password
+     */
+    public function changePassword(ChangePasswordRequest $request)
+    {
+        $validated = $request->validated();
+        $user = Auth::user();
+
+        // Check user old password match or not with user model password
+        if (!Hash::check($validated['oldPassword'], $user->password)) {
+            return $this->sendErrorResponse('Old Password not match');
+        };
+
+        $user->password = Hash::make($validated['newPassword']);
+        $user->save();
+
+        // Logout the current user and generate new token
+        auth()->logout();
+        $newToken = JWTAuth::fromUser($user);
+
+        return $this->sendSuccessResponse('Password changed successful', ['token' => $newToken]);
     }
 }
