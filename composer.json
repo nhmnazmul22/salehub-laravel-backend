@@ -13,7 +13,8 @@
         "laravel/framework": "^13.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^3.0",
-        "tymon/jwt-auth": "*"
+        "tymon/jwt-auth": "*",
+        "visus/cuid2": "^6.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
