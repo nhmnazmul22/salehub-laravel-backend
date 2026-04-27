@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use Database\Factories\BranchFactory;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Str;
 
 class BranchSeeder extends Seeder
 {
@@ -60,7 +59,6 @@ class BranchSeeder extends Seeder
 
         foreach ($branches as $branch) {
             BranchFactory::new()->create([
-                'uuid' => Str::uuid(),
                 'name' => $branch['name'],
                 'address' => $branch['address'],
                 'phone' => $branch['phone'],

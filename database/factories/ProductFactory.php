@@ -5,7 +5,6 @@ namespace Database\Factories;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
 /**
  * @extends Factory<Product>
@@ -29,7 +28,6 @@ class ProductFactory extends Factory
         return [
             'name' => fake()->sentence(),
             'slug' => fake()->slug(),
-            'uuid' => Str::uuid(),
             'categoryId' => $category->categoryId,
             'unitId' => $unit->unitId,
             'brandId' => $brand->brandId,

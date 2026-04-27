@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Str;
 
 class Branch extends Model
 {
@@ -14,7 +13,6 @@ class Branch extends Model
 
     protected $primaryKey = 'branchId';
     protected $fillable = [
-        'uuid',
         'name',
         'address',
         'phone',
@@ -23,12 +21,4 @@ class Branch extends Model
         'isActive',
     ];
 
-    protected static function booted(): void
-    {
-        parent::booted();
-
-        static::creating(function ($model) {
-            $model->uuid = Str::uuid();
-        });
-    }
 }

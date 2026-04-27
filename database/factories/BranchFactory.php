@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use App\Models\Branch;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
 /**
  * @extends Factory<Branch>
@@ -22,7 +21,6 @@ class BranchFactory extends Factory
     {
         return [
             'name' => fake()->name(),
-            'uuid' => Str::uuid(),
             'address' => fake()->address(),
             'phone' => fake()->phoneNumber(),
             'email' => fake()->email(),

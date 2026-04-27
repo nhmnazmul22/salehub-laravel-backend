@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Str;
 
 class Product extends Model
 {
@@ -29,14 +28,5 @@ class Product extends Model
         'createdBy'
     ];
 
-
-    protected static function booted(): void
-    {
-        parent::booted();
-
-        static::creating(function ($model) {
-            $model->uuid = Str::uuid();
-        });
-    }
 
 }
