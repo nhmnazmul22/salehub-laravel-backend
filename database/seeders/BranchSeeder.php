@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use Database\Factories\BranchFactory;
+use App\Models\Branch;
 use Illuminate\Database\Seeder;
 
 class BranchSeeder extends Seeder
@@ -58,7 +58,7 @@ class BranchSeeder extends Seeder
         ];
 
         foreach ($branches as $branch) {
-            BranchFactory::new()->create([
+            Branch::create([
                 'name' => $branch['name'],
                 'address' => $branch['address'],
                 'phone' => $branch['phone'],
