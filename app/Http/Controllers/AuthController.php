@@ -199,4 +199,23 @@ class AuthController extends BaseController
 
         return $this->sendSuccessResponse('Password changed successful', ['token' => $newToken]);
     }
+
+    /**
+     * Refresh token
+     * @throws JWTException
+     */
+
+    public function refreshToken()
+    {
+        $newAccessToken = JWTAuth::parseToken()->refresh();
+
+        return $this->sendSuccessResponse(
+            'Token refresh successful',
+            [
+                'accessToken' => $newAccessToken,
+                'expiresIn' => config('jwt.ttl')
+            ]
+        );
+    }
+
 }

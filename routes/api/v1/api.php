@@ -2,6 +2,7 @@
 
 
 use App\Http\Controllers\AuthController;
+use App\Http\Middleware\RefreshTokenMiddleware;
 
 Route::middleware('auth:api')->prefix('v1')->as('v1.')->group(function () {
     Route::prefix('auth')->as('auth.')->group(function () {
@@ -10,6 +11,8 @@ Route::middleware('auth:api')->prefix('v1')->as('v1.')->group(function () {
             Route::post('/forgot-password', [AuthController::class, 'forgotPassword'])->name('forgot-password');
             Route::post('/verify-otp', [AuthController::class, 'verifyOTP'])->name('verify-otp');
             Route::patch('/reset-password', [AuthController::class, 'resetPassword'])->name('reset-password');
+            Route::post('/refresh-token', [AuthController::class, 'refreshToken'])->name('refresh-token')
+                ->middleware(RefreshTokenMiddleware::class);
         });
 
         Route::get('/me', [AuthController::class, 'me'])->name('me');
