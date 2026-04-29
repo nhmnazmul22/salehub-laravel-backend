@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Services\Auth;
+namespace App\Services;
 
 use App\Exceptions\BusinessException;
 use App\Exceptions\UnauthorizedException;
 use App\Mail\SendOtpMail;
 use App\Models\User;
-use App\Services\BaseService;
 use DB;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;

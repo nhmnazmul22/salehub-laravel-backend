@@ -10,7 +10,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\OTPVerifyRequest;
 use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Http\Resources\User\UserResource;
-use App\Services\Auth\AuthService;
+use App\Services\AuthService;
 use Exception;
 use Symfony\Component\HttpFoundation\Response;
 use Tymon\JWTAuth\Exceptions\JWTException;
