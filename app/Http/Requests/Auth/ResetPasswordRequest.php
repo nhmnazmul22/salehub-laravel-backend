@@ -2,30 +2,22 @@
 
 namespace App\Http\Requests\Auth;
 
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
 
 class ResetPasswordRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, ValidationRule|array|string>
-     */
     public function rules(): array
     {
         return [
             'email' => ['required', 'email', 'exists:users,email'],
             'token' => ['required', 'string'],
+
             'newPassword' => [
                 'required',
                 'string',
@@ -37,7 +29,40 @@ class ResetPasswordRequest extends FormRequest
                     ->numbers()
                     ->symbols()
             ],
-            'newPassword_confirmation' => ['required', 'string']
+
+            'newPassword_confirmation' => ['required', 'string'],
+        ];
+    }
+
+    /**
+     * Custom validation messages
+     */
+    public function messages(): array
+    {
+        return [
+            'email.required' => 'Please enter your email address',
+            'email.email' => 'Please enter a valid email address',
+            'email.exists' => 'No account found with this email',
+
+            'token.required' => 'Reset token is required',
+
+            'newPassword.required' => 'Please enter a new password',
+            'newPassword.confirmed' => 'Password confirmation does not match',
+
+            'newPassword_confirmation.required' => 'Please confirm your new password',
+        ];
+    }
+
+    /**
+     * Friendly field names
+     */
+    public function attributes(): array
+    {
+        return [
+            'email' => 'email address',
+            'token' => 'reset token',
+            'newPassword' => 'new password',
+            'newPassword_confirmation' => 'password confirmation',
         ];
     }
 }

@@ -2,25 +2,16 @@
 
 namespace App\Http\Requests\Auth;
 
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
 
 class ChangePasswordRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, ValidationRule|array|string>
-     */
     public function rules(): array
     {
         return [
@@ -45,6 +36,35 @@ class ChangePasswordRequest extends FormRequest
                     ->symbols()
             ],
             'newPassword_confirmation' => ['required', 'string']
+        ];
+    }
+
+    /**
+     * Custom validation messages
+     */
+    public function messages(): array
+    {
+        return [
+            'oldPassword.required' => 'Please enter your current password',
+            'oldPassword.string' => 'Current password must be a valid string',
+
+            'newPassword.required' => 'Please enter a new password',
+            'newPassword.string' => 'New password must be a valid string',
+
+            'newPassword_confirmation.required' => 'Please confirm your new password',
+            'newPassword_confirmation.string' => 'Confirmation password must be a valid string',
+        ];
+    }
+
+    /**
+     * Custom attribute names (for cleaner error messages)
+     */
+    public function attributes(): array
+    {
+        return [
+            'oldPassword' => 'current password',
+            'newPassword' => 'new password',
+            'newPassword_confirmation' => 'password confirmation',
         ];
     }
 }
