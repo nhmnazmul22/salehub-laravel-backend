@@ -2,10 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Branch\BranchStoreRequest;
+use App\Services\BranchService;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class BranchController extends BaseController
 {
+
+    public function __construct(private readonly BranchService $branchService)
+    {
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -17,9 +25,10 @@ class BranchController extends BaseController
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(BranchStoreRequest $request)
     {
-        //
+        $result = $this->branchService->createBranch($request->validated());
+        return $this->sendSuccessResponse('Branch created successful', $result, Response::HTTP_CREATED);
     }
 
     /**
