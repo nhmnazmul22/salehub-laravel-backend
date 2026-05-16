@@ -2,19 +2,26 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class UserTest extends TestCase
 {
     /**
-     * A basic feature test example.
+     * Test admin can create new user
      */
-    public function test_example(): void
+    public function test_admin_can_create_new_user(): void
     {
-        $response = $this->get('/');
+        // Arrange
+        $payload = [
+            'firstName' => 'new_staff',
+            'lastName' => 'salehub',
+            'role' => 'staff',
+            'email' => 'staff@gamil.com',
+            'password' => '@Staff_salehub22',
+            'branchId' => 1,
+        ];
+        // Act
+        // Assert
 
-        $response->assertStatus(200);
     }
 }

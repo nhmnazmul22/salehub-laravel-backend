@@ -23,7 +23,7 @@ class BranchStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255', 'unique:branches,name'],
             'address' => ['required', 'string'],
             'phone' => ['required_without:email', 'string', 'max:255', 'unique:branches,phone'],
             'email' => ['required_without:phone', 'email', 'string', 'max:255', 'unique:branches,email'],

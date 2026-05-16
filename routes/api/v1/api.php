@@ -21,5 +21,7 @@ Route::prefix('v1')->as('v1.')->group(function () {
         });
     });
 
-    Route::apiResource('branches', BranchController::class);
+    Route::middleware('auth:api')->group(function () {
+        Route::apiResource('branches', BranchController::class);
+    });
 });

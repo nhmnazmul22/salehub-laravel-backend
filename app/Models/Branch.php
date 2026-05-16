@@ -21,4 +21,8 @@ class Branch extends Model
         'isActive',
     ];
 
+    protected $casts = [
+        'isActive' => 'boolean'
+    ];
+
 }

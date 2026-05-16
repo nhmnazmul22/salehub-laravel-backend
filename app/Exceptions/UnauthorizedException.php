@@ -14,6 +14,6 @@ class UnauthorizedException extends Exception
         return response()->json([
             'success' => false,
             'message' => $this->getMessage() ?? 'Unauthorized',
-        ], $this->getCode() ?? Response::HTTP_UNAUTHORIZED);
+        ], Response::HTTP_UNAUTHORIZED);
     }
 }

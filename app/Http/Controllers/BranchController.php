@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Branch\BranchStoreRequest;
+use App\Http\Resources\Branch\BranchResource;
 use App\Services\BranchService;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +20,8 @@ class BranchController extends BaseController
      */
     public function index()
     {
-        //
+        $result = $this->branchService->getAllBranch();
+        return $this->sendSuccessResponse('Branch retrieved successful', BranchResource::collection($result));
     }
 
     /**
@@ -28,7 +30,7 @@ class BranchController extends BaseController
     public function store(BranchStoreRequest $request)
     {
         $result = $this->branchService->createBranch($request->validated());
-        return $this->sendSuccessResponse('Branch created successful', $result, Response::HTTP_CREATED);
+        return $this->sendSuccessResponse('Branch created successful', new BranchResource($result), Response::HTTP_CREATED);
     }
 
     /**
