@@ -25,7 +25,7 @@ class Branch extends Model
         'isActive' => 'boolean'
     ];
 
-    public function getRouteKey(): string
+    public function getRouteKeyName(): string
     {
         return 'cuid';
     }

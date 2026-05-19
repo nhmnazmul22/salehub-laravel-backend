@@ -62,8 +62,9 @@ class BranchController extends BaseController
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Branch $branch)
     {
-        //
+        $branch->delete();
+        return $this->sendSuccessResponse('Branch Deleted successful', status: Response::HTTP_NO_CONTENT);
     }
 }

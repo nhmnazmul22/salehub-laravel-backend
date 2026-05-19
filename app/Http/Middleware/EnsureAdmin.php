@@ -18,6 +18,7 @@ class EnsureAdmin
     {
         $user = auth()->user();
 
+
         if (!$user) {
             return response()->json([
                 'success' => false,
@@ -25,13 +26,13 @@ class EnsureAdmin
             ], Response::HTTP_UNAUTHORIZED);
         }
 
-        if ($user->role !== RoleType::ADMIN) {
+        if ($user->role !== RoleType::ADMIN->value) {
             return response()->json([
                 'success' => false,
                 'message' => 'Unauthenticated'
             ], Response::HTTP_UNAUTHORIZED);
         }
-        
+
         return $next($request);
     }
 }
