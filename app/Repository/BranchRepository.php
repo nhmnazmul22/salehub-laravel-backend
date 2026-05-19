@@ -22,5 +22,10 @@ class BranchRepository extends BaseRepository
         return $this->branch->create($attributes);
     }
 
+    public function updateBranch(Branch $branch, array $attributes): bool
+    {
+        return $branch->update($attributes);
+    }
+
 
 }

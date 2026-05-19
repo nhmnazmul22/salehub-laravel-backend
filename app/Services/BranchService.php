@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Branch;
 use App\Repository\BranchRepository;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -21,6 +22,11 @@ class BranchService extends BaseService
     public function createBranch(array $attributes)
     {
         return $this->branchRepository->createBranch($attributes);
+    }
+
+    public function updateBranch(Branch $branch, array $attributes): bool
+    {
+        return $this->branchRepository->updateBranch($branch, $attributes);
     }
 
 }

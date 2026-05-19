@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Branch\BranchStoreRequest;
+use App\Http\Requests\Branch\BranchUpdateRequest;
 use App\Http\Resources\Branch\BranchResource;
+use App\Models\Branch;
 use App\Services\BranchService;
-use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class BranchController extends BaseController
@@ -36,17 +37,26 @@ class BranchController extends BaseController
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Branch $branch)
     {
-        //
+        return $this->sendSuccessResponse(
+            'Branch retrieved successful',
+            new BranchResource($branch),
+            Response::HTTP_CREATED
+        );
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Branch $branch, BranchUpdateRequest $request)
     {
-        //
+        $result = $this->branchService->updateBranch($branch, $request->validated());
+        return $this->sendSuccessResponse(
+            'Branch updated successful',
+            new BranchResource($result),
+            Response::HTTP_ACCEPTED
+        );
     }
 
     /**

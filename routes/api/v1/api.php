@@ -21,7 +21,7 @@ Route::prefix('v1')->as('v1.')->group(function () {
         });
     });
 
-    Route::middleware('auth:api')->group(function () {
+    Route::middleware(['auth:api', 'EnsureAdmin'])->group(function () {
         Route::apiResource('branches', BranchController::class);
     });
 });
