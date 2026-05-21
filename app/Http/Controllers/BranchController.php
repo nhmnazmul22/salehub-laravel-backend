@@ -41,8 +41,7 @@ class BranchController extends BaseController
     {
         return $this->sendSuccessResponse(
             'Branch retrieved successful',
-            new BranchResource($branch),
-            Response::HTTP_CREATED
+            new BranchResource($branch)
         );
     }
 
