@@ -12,7 +12,7 @@ class BranchUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return isAdmin();
+        return true;
     }
 
     /**

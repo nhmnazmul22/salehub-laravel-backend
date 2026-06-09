@@ -24,7 +24,7 @@ class BranchService extends BaseService
         return $this->branchRepository->createBranch($attributes);
     }
 
-    public function updateBranch(Branch $branch, array $attributes): bool
+    public function updateBranch(Branch $branch, array $attributes): Branch
     {
         return $this->branchRepository->updateBranch($branch, $attributes);
     }

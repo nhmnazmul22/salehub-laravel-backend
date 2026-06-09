@@ -123,8 +123,14 @@ class BranchTest extends TestCase
             'isActive' => false,
         ];
         // Act
-        $response = $this->withHeaders($this->authHeaders())->putJson();
+        $response = $this->withHeaders($this->authHeaders())
+            ->putJson(route('v1.branches.update', [$branch->cuid]), $updatePayload);
 
         // Assert
+        $response->assertStatus(202);
+        $response->assertJson([
+            'success' => true,
+            'message' => 'Branch updated successful',
+        ]);
     }
 }
