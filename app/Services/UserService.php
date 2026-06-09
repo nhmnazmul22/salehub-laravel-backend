@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Repository\UserRepository;
+use Illuminate\Database\Eloquent\Collection;
 
 class UserService extends BaseService
 {
@@ -11,6 +12,10 @@ class UserService extends BaseService
     {
     }
 
+    public function getUserList(): Collection|array
+    {
+        return $this->userRepository->findAllUsers();
+    }
 
     /**
      * Create new user

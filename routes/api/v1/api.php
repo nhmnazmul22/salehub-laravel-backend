@@ -3,6 +3,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BranchController;
+use App\Http\Controllers\UserController;
 use App\Http\Middleware\RefreshTokenMiddleware;
 
 Route::prefix('v1')->as('v1.')->group(function () {
@@ -23,5 +24,6 @@ Route::prefix('v1')->as('v1.')->group(function () {
 
     Route::middleware(['auth:api', 'EnsureAdmin'])->group(function () {
         Route::apiResource('branches', BranchController::class);
+        Route::apiResource('users', UserController::class);
     });
 });

@@ -17,6 +17,8 @@ class User extends Authenticatable implements JWTSubject
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
+    protected $table = 'users';
+
     protected $fillable = [
         'firstName',
         'lastName',
@@ -91,6 +93,11 @@ class User extends Authenticatable implements JWTSubject
             'branchId' => $this->branchId,
             'isActive' => $this->isActive,
         ];
+    }
+
+    public function getRouteKeyName(): string
+    {
+        return 'cuid';
     }
 
     public function branch(): HasOne|Branch

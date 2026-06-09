@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\User\UserStoreRequest;
 use App\Http\Resources\User\UserResource;
+use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends BaseController
 {
@@ -18,7 +20,8 @@ class UserController extends BaseController
      */
     public function index()
     {
-        //
+        $result = $this->userService->getUserList();
+        return $this->sendSuccessResponse('Users retrieved successful', UserResource::collection($result));
     }
 
     /**
@@ -27,15 +30,19 @@ class UserController extends BaseController
     public function store(UserStoreRequest $request)
     {
         $result = $this->userService->createNewUser($request->validated());
-        return $this->sendSuccessResponse('User created successful', new UserResource($result));
+        return $this->sendSuccessResponse(
+            'User created successful',
+            new UserResource($result),
+            Response::HTTP_CREATED
+        );
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(User $user)
     {
-        //
+        return $this->sendSuccessResponse('User retrieved successful', new UserResource($user));
     }
 
     /**
