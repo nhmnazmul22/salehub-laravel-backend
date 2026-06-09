@@ -20,7 +20,6 @@ class UserService extends BaseService
     /**
      * Create new user
      */
-
     public function createNewUser(array $attributes): User
     {
         $data = [
@@ -32,5 +31,20 @@ class UserService extends BaseService
             'branchId' => $attributes['branchId'],
         ];
         return $this->userRepository->createUser($data);
+    }
+
+    /**
+     * Update user
+     */
+
+    public function updateUser(User $user, array $attributes): User
+    {
+        $data = array_filter($attributes, fn($value) => $value !== null);
+        return $this->userRepository->updateUser($user, $data);
+    }
+
+    public function deleteUser(User $user): ?bool
+    {
+        return $user->delete();
     }
 }

@@ -21,4 +21,10 @@ class UserRepository extends BaseRepository
         return $this->user->create($attributes);
     }
 
+    public function updateUser(User $user, array $attributes): User
+    {
+        $user->update($attributes);
+        return $user->refresh();
+    }
+
 }

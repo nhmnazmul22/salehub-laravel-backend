@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Enums\RoleType;
 use App\Models\Branch;
 use App\Models\User;
 use Database\Seeders\UserSeeder;
@@ -73,7 +74,6 @@ class UserTest extends TestCase
     /**
      * Test admin can get user by CUID
      */
-
     public function test_admin_can_get_user_by_CUID()
     {
         // Act
@@ -85,5 +85,57 @@ class UserTest extends TestCase
             'success' => true,
             'message' => 'User retrieved successful'
         ]);
+    }
+
+    /**
+     * Test admin can update user by CUID
+     */
+    public function test_admin_can_update_user_by_CUID()
+    {
+        // Arrange
+        $user = User::factory()->create(['role' => RoleType::STAFF]);
+        $updatedPayload = [
+            'firstName' => "Nhm Nazmul",
+            'lastName' => 'Hasan',
+            'role' => RoleType::BRANCH_MANAGER,
+            'email' => 'nhmnazmul222@gmail.com',
+            'isActive' => false,
+        ];
+        // Act
+        $result = $this->withHeaders($this->authHeaders())
+            ->putJson(route('v1.users.update', [$user->cuid]), $updatedPayload);
+        // Assert
+        $result->assertStatus(202);
+        $result->assertJson([
+            'success' => true,
+            'message' => 'User updated successful',
+        ]);
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'firstName' => "Nhm Nazmul",
+            'lastName' => 'Hasan',
+            'role' => RoleType::BRANCH_MANAGER,
+            'email' => 'nhmnazmul222@gmail.com',
+            'isActive' => false,
+        ]);
+    }
+
+    /**
+     * Test admin can delete user by CUID
+     */
+
+    public function test_admin_can_delete_user_by_CUID()
+    {
+        // Act
+        $result = $this->withHeaders($this->authHeaders())
+            ->deleteJson(route('v1.users.destroy', [$this->user->cuid]));
+
+        // Assert
+        $result->assertStatus(204);
+        $this->assertDatabaseMissing('users', [
+            'id' => $this->user->id,
+            'cuid' => $this->user->cuid
+        ]);
+
     }
 }

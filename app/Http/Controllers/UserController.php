@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\User\UserStoreRequest;
+use App\Http\Requests\User\UserUpdateRequest;
 use App\Http\Resources\User\UserResource;
 use App\Models\User;
 use App\Services\UserService;
-use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends BaseController
@@ -48,16 +48,22 @@ class UserController extends BaseController
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UserUpdateRequest $request, User $user)
     {
-        //
+        $result = $this->userService->updateUser($user, $request->validated());
+        return $this->sendSuccessResponse(
+            'User updated successful',
+            new UserResource($result),
+            Response::HTTP_ACCEPTED
+        );
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
-        //
+        $this->userService->deleteUser($user);
+        return $this->sendSuccessResponse('User deleted successful', null, Response::HTTP_NO_CONTENT);
     }
 }
